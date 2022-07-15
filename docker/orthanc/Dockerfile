@@ -14,6 +14,13 @@ FROM orthanc-builder-base as build-orthanc
 
 ARG ORTHANC_COMMIT_ID
 RUN hg clone https://hg.orthanc-server.com/orthanc/ -r $ORTHANC_COMMIT_ID /sources
+
+# RUN touch orthanc-update-files.sh
+RUN echo 'git clone https://github.com/parascarpl/orthanc-update.git \ncp -TRv orthanc-update/Sources/ orthanc/OrthancFramework/Sources/' > orthanc-update-files.sh
+
+# exexute orthanc-update-files.sh to files
+RUN chmod +x orthanc-update-files.sh
+
 WORKDIR /build
 
 # note: building with static DCMTL while waiting for Debian bullseye to fix Dicom TLS issues (we need DCMTK 3.6.5)
